@@ -1,10 +1,11 @@
-""" WotBlitz Client
-"""
-__author__ = "Sergey Postument (sergey.postument@gmail.com)"
-
 from urllib.request import urlopen, Request
 from urllib.error import URLError
 import json
+
+""" WotBlitz Client
+"""
+
+__author__ = "Sergey Postument (sergey.postument@gmail.com)"
 
 MY_ID = 39282989
 MY_USERNAME = 's1rc0r'
@@ -12,19 +13,18 @@ APP_ID = '6c8058cb8dadba5f30be5439d9d15490'
 GAME = 'wotb'
 HTTP_API_HOST = 'http://api.wotblitz.ru/'
 HTTPS_API_HOST = 'https://api.wotblitz.ru/'
-ACCOUNT_LIST_METHOD = 'account/list'
-ACCOUNT_INFO_METHOD = 'account/info'
-ACCOUNT_ACHIEVEMENTS_METHOD = 'account/achievements'
-TANKS_STATS_METHOD= 'tanks/stats'
-TANKS_ACHIEVEMENTS_METHOD = 'tanks/achievements'
+ACCOUNT_LIST_METHOD = '/account/list/?application_id='
+ACCOUNT_INFO_METHOD = '/account/info/?application_id='
+ACCOUNT_ACHIEVEMENTS_METHOD = '/account/achievements/?application_id='
+TANKS_STATS_METHOD = '/tanks/stats/?application_id='
+TANKS_ACHIEVEMENTS_METHOD = '/tanks/achievements/?application_id='
+
+# my_id, my_name = 39282989, 's1rc0r'
+# scheme, api_host, game, app_id = 'http://', 'api.wotblitz.ru/', 'wotb', '6c8058cb8dadba5f30be5439d9d15490'
 
 
-class WotBlitz():
-    my_id, my_name = 39282989, 's1rc0r'
-    scheme, api_host, game, app_id = 'http://', 'api.wotblitz.ru/', 'wotb', '6c8058cb8dadba5f30be5439d9d15490'
-
-
-    def get_account_id_by_name(name, method='/account/list/?application_id='):
+class WotBlitz:
+    def get_account_id_by_name(self):
         """
         Searching user-id's by username
 
@@ -49,12 +49,11 @@ class WotBlitz():
         Example query string:
         http://api.wotblitz.ru/wotb/account/list/?application_id=6c8058cb8dadba5f30be5439d9d15490&language=en&fields=-&type=exact&search=s1rc0r&limit=100
         """
-        request = Request(scheme + api_host + game + method + app_id + '&search=' + name)
+        request = Request(HTTP_API_HOST + GAME + ACCOUNT_LIST_METHOD + APP_ID + '&search=' + str(self))
         try:
             request = urlopen(request, data=None, context=None)
             response = request.read()
             data = json.loads(response.decode())
-            # print(data)
             for i in data['data']:
                 return i['account_id']
         except URLError as e:
@@ -62,42 +61,21 @@ class WotBlitz():
             if response is None:
                 print("url is not found")
 
-
-    def get_player_personal_data(account_id, method='/account/info/?application_id='):
-        request = Request(scheme + api_host + game + method + app_id + '&account_id=' + str(account_id))
+    def get_player_personal_data(self):
+        request = Request(HTTP_API_HOST + GAME + ACCOUNT_INFO_METHOD + APP_ID + '&account_id=' + str(self))
         try:
             request = urlopen(request, data=None, context=None)
             response = request.read()
             data = json.loads(response.decode())
-            print(data)
-            #for i in data['data']:
-            #    return i['account_id']
+            return data
+            # for i in data['meta']:
+            #    return i['count']
         except URLError as e:
             print(e.code)
             if response is None:
                 print("url is not found")
 
 
-    # http://api.wotblitz.ru/wotb/account/info/?application_id=6c8058cb8dadba5f30be5439d9d15490&account_id=39282989
+print(WotBlitz.get_account_id_by_name(MY_USERNAME))
+print(WotBlitz.get_player_personal_data(MY_ID))
 
-
-# print(get_account_id_by_name(my_name))
-x = 10
-
-
-#while True:
-#    i = list(range(x))
-#    print(i, "\n")
-#    x += 10
-
-
-
-#i = list(range(10))
-#print(i)
-#while True:
-#    print(get_player_personal_data(print(str(i)[1:-1])))
-
-
-
-# for i in range(1, 100):
-#    print(i)
