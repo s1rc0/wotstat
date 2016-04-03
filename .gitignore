@@ -51,6 +51,7 @@ coverage.xml
 
 # Django stuff:
 *.log
+/templates/stats/detail_save.html
 
 # Sphinx documentation
 docs/_build/

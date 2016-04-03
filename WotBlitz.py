@@ -7,8 +7,6 @@ import json
 
 __author__ = "Sergey Postument (sergey.postument@gmail.com)"
 
-MY_ID = 39282989
-MY_USERNAME = 's1rc0r'
 APP_ID = '6c8058cb8dadba5f30be5439d9d15490'
 GAME = 'wotb'
 HTTP_API_HOST = 'http://api.wotblitz.ru/'
@@ -19,12 +17,17 @@ ACCOUNT_ACHIEVEMENTS_METHOD = '/account/achievements/?application_id='
 TANKS_STATS_METHOD = '/tanks/stats/?application_id='
 TANKS_ACHIEVEMENTS_METHOD = '/tanks/achievements/?application_id='
 
-# my_id, my_name = 39282989, 's1rc0r'
-# scheme, api_host, game, app_id = 'http://', 'api.wotblitz.ru/', 'wotb', '6c8058cb8dadba5f30be5439d9d15490'
-
 
 class WotBlitz:
-    def get_account_id_by_name(self):
+    application_id = ''
+
+    def __init__(self):
+        self.application_id = ''
+
+    def get_application_id(self):
+        return self.application_id
+
+    def get_account_id_by_name(self, nickname):
         """
         Searching user-id's by username
 
@@ -49,7 +52,7 @@ class WotBlitz:
         Example query string:
         http://api.wotblitz.ru/wotb/account/list/?application_id=6c8058cb8dadba5f30be5439d9d15490&language=en&fields=-&type=exact&search=s1rc0r&limit=100
         """
-        request = Request(HTTP_API_HOST + GAME + ACCOUNT_LIST_METHOD + APP_ID + '&search=' + str(self))
+        request = Request(HTTP_API_HOST + GAME + ACCOUNT_LIST_METHOD + self.application_id + '&search=' + str(nickname))
         try:
             request = urlopen(request, data=None, context=None)
             response = request.read()
@@ -61,8 +64,8 @@ class WotBlitz:
             if response is None:
                 print("url is not found")
 
-    def get_player_personal_data(self):
-        request = Request(HTTP_API_HOST + GAME + ACCOUNT_INFO_METHOD + APP_ID + '&account_id=' + str(self))
+    def get_player_personal_data(self, player_id):
+        request = Request(HTTP_API_HOST + GAME + ACCOUNT_INFO_METHOD + self.application_id + '&account_id=' + str(player_id))
         try:
             request = urlopen(request, data=None, context=None)
             response = request.read()
@@ -76,6 +79,4 @@ class WotBlitz:
                 print("url is not found")
 
 
-print(WotBlitz.get_account_id_by_name(MY_USERNAME))
-print(WotBlitz.get_player_personal_data(MY_ID))
 

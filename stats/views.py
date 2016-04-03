@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.http import HttpResponse
 from .models import BlitzUsers
+from WotBlitz import WotBlitz
 
 
 def index(request):
@@ -11,6 +12,14 @@ def index(request):
 
 
 def detail(request, account_id):
+    c = WotBlitz()
+    c.application_id = '6c8058cb8dadba5f30be5439d9d15490'
+    # account = c.get_account_id_by_name('s1rc0r')
+    stats = c.get_player_personal_data(account_id)
+    return render(request, 'stats/detail.html', {'account': account_id, 'stats': stats})
+
+'''
+def detail(request, account_id):
     try:
         account = BlitzUsers.objects.get(pk=account_id)
     except BlitzUsers.DoesNotExist:
@@ -18,7 +27,7 @@ def detail(request, account_id):
     return render(request, 'stats/detail.html', {'account': account})
     #     account = get_object_or_404(BlitzUsers, pk=account_id)
     #     return render(request, 'stats/detail.html', {'account': account})
-
+'''
 
 def results(request, account_id):
     response = "You're looking at the results of account %s."
