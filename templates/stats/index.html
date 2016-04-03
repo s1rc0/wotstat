@@ -1,0 +1,9 @@
+{% if latest_account_list %}
+    <ul>
+    {% for account in latest_account_list %}
+        <li><a href="{% url 'stats:detail' account.account_id %}">{{ account.nickname }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No account are available.</p>
+{% endif %}
