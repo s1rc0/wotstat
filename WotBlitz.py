@@ -1,6 +1,9 @@
 from urllib.request import urlopen, Request
 from urllib.error import URLError
+from urllib.parse import urlencode
 import json
+
+
 
 """ WotBlitz Client
 """
@@ -11,11 +14,20 @@ APP_ID = '6c8058cb8dadba5f30be5439d9d15490'
 GAME = 'wotb'
 HTTP_API_HOST = 'http://api.wotblitz.ru/'
 HTTPS_API_HOST = 'https://api.wotblitz.ru/'
-ACCOUNT_LIST_METHOD = '/account/list/?application_id='
-ACCOUNT_INFO_METHOD = '/account/info/?application_id='
-ACCOUNT_ACHIEVEMENTS_METHOD = '/account/achievements/?application_id='
-TANKS_STATS_METHOD = '/tanks/stats/?application_id='
-TANKS_ACHIEVEMENTS_METHOD = '/tanks/achievements/?application_id='
+ACCOUNT_LIST_METHOD = '/account/list/'
+ACCOUNT_INFO_METHOD = '/account/info/'
+ACCOUNT_ACHIEVEMENTS_METHOD = '/account/achievements/'
+TANKS_STATS_METHOD = '/tanks/stats/'
+TANKS_ACHIEVEMENTS_METHOD = '/tanks/achievements/'
+
+'''
+def finditem(obj, key):
+    if key in obj:
+        return obj[key]
+    for k, v in obj.items():
+        if isinstance(v, dict):
+            return finditem(v, key)
+'''
 
 
 class WotBlitz:
@@ -27,7 +39,16 @@ class WotBlitz:
     def get_application_id(self):
         return self.application_id
 
-    def get_account_id_by_name(self, nickname):
+    def get_account_id(self, nickname, language="ru", fields="", type="", limit=100):
+        post_data = {"application_id": self.application_id, "language": language, "limit": limit, "type": type, "fields": fields, "search": nickname}
+        encoded_post_data = urlencode(post_data)
+        p = encoded_post_data.encode("utf-8")
+        request = urlopen(Request(HTTP_API_HOST + GAME + ACCOUNT_LIST_METHOD), data=p, context=None)
+        response = request.read()
+        data = json.loads(response.decode())
+        return data
+
+    def get_account_id_by_name(self, nickname, language="en", fields="", type="exact", limit=100):
         """
         Searching user-id's by username
 
@@ -57,8 +78,7 @@ class WotBlitz:
             request = urlopen(request, data=None, context=None)
             response = request.read()
             data = json.loads(response.decode())
-            for i in data['data']:
-                return i['account_id']
+            return data
         except URLError as e:
             print(e.code)
             if response is None:
@@ -71,8 +91,6 @@ class WotBlitz:
             response = request.read()
             data = json.loads(response.decode())
             return data
-            # for i in data['meta']:
-            #    return i['count']
         except URLError as e:
             print(e.code)
             if response is None:
