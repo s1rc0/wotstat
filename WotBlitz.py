@@ -2,9 +2,6 @@ from urllib.request import urlopen, Request
 from urllib.error import URLError
 from urllib.parse import urlencode
 import json
-
-
-
 """ WotBlitz Client
 """
 
@@ -20,15 +17,6 @@ ACCOUNT_ACHIEVEMENTS_METHOD = '/account/achievements/'
 TANKS_STATS_METHOD = '/tanks/stats/'
 TANKS_ACHIEVEMENTS_METHOD = '/tanks/achievements/'
 
-'''
-def finditem(obj, key):
-    if key in obj:
-        return obj[key]
-    for k, v in obj.items():
-        if isinstance(v, dict):
-            return finditem(v, key)
-'''
-
 
 class WotBlitz:
     application_id = ''
@@ -39,20 +27,11 @@ class WotBlitz:
     def get_application_id(self):
         return self.application_id
 
-    def get_account_id(self, nickname, language="ru", fields="", type="", limit=100):
-        post_data = {"application_id": self.application_id, "language": language, "limit": limit, "type": type, "fields": fields, "search": nickname}
-        encoded_post_data = urlencode(post_data)
-        p = encoded_post_data.encode("utf-8")
-        request = urlopen(Request(HTTP_API_HOST + GAME + ACCOUNT_LIST_METHOD), data=p, context=None)
-        response = request.read()
-        data = json.loads(response.decode())
-        return data
-
-    def get_account_id_by_name(self, nickname, language="en", fields="", type="exact", limit=100):
+    def get_account_id(self, nickname, language="en", fields="", s_type="", limit=100):
         """
         Searching user-id's by username
 
-        Argumens:
+        ARGS:
         Parameter           Type            Description
         *application_id     string	        Application ID
         *search             string          Player name search string. Parameter 'type' defines minimum length and
@@ -70,12 +49,13 @@ class WotBlitz:
         limit               numeric         Number of returned entries (fewer can be returned, but not more than 100).
                                             If the limit sent exceeds 100, an limit of 100 is applied (by default).
 
-        Example query string:
-        http://api.wotblitz.ru/wotb/account/list/?application_id=6c8058cb8dadba5f30be5439d9d15490&language=en&fields=-&type=exact&search=s1rc0r&limit=100
         """
-        request = Request(HTTP_API_HOST + GAME + ACCOUNT_LIST_METHOD + self.application_id + '&search=' + str(nickname))
+        post_data = {"application_id": self.application_id, "language": language, "limit": limit,
+                     "type": s_type,"fields": fields, "search": nickname}
+        encoded_post_data = urlencode(post_data)
+        p = encoded_post_data.encode("utf-8")
         try:
-            request = urlopen(request, data=None, context=None)
+            request = urlopen(Request(HTTP_API_HOST + GAME + ACCOUNT_LIST_METHOD), data=p)
             response = request.read()
             data = json.loads(response.decode())
             return data
@@ -84,10 +64,14 @@ class WotBlitz:
             if response is None:
                 print("url is not found")
 
-    def get_player_personal_data(self, player_id):
-        request = Request(HTTP_API_HOST + GAME + ACCOUNT_INFO_METHOD + self.application_id + '&account_id=' + str(player_id))
+    def get_player_personal_data(self, account_id, language="en", fields="", access_token="",
+                                 extra="private.grouped_contacts"):
+        post_data = {"application_id": self.application_id, "language": language, "fields": fields,
+                     "access_token": access_token, "extra": extra, "account_id": account_id}
+        encoded_post_data = urlencode(post_data)
+        p = encoded_post_data.encode("utf-8")
         try:
-            request = urlopen(request, data=None, context=None)
+            request = urlopen(Request(HTTP_API_HOST + GAME + ACCOUNT_INFO_METHOD), data=p)
             response = request.read()
             data = json.loads(response.decode())
             return data
@@ -96,5 +80,17 @@ class WotBlitz:
             if response is None:
                 print("url is not found")
 
-
-
+    def get_player_achievements(self, account_id, language="en", fields=""):
+        post_data = {"application_id": self.application_id, "language": language, "fields": fields,
+                     "account_id": account_id}
+        encoded_post_data = urlencode(post_data)
+        p = encoded_post_data.encode("utf-8")
+        try:
+            request = urlopen(Request(HTTP_API_HOST + GAME + ACCOUNT_ACHIEVEMENTS_METHOD), data=p)
+            response = request.read()
+            data = json.loads(response.decode())
+            return data
+        except URLError as e:
+            print(e.code)
+            if response is None:
+                print("url is not found")

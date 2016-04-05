@@ -12,44 +12,12 @@ WotBlitz.application_id = '6c8058cb8dadba5f30be5439d9d15490'
 c = WotBlitz()
 c.application_id = '6c8058cb8dadba5f30be5439d9d15490'
 
-x = c.get_account_id('s1r',limit=2)
-
-print(x)
-
-'''
-def get_all_key_value_pairs_where_values_are_simple(data):
-    class Namespace(object):
-        pass
-    ns = Namespace()
-    ns.results = []
-
-    def inner(data):
-        if isinstance(data, dict):
-            for k, v in data.items():
-                if (isinstance(v, dict) or
-                    isinstance(v, list) or
-                    isinstance(v, tuple)
-                    ):
-                    inner(v)
-                else:
-                    ns.results.append((k, v))
-        elif isinstance(data, list) or isinstance(data, tuple):
-            for item in data:
-                inner(item)
-
-    inner(data)
-    return ns.results
-
-from pprint import pprint
-
-
-
-#s = c.get_player_personal_data(MY_ID)
-s = c.get_account_id_by_name('s1rc0r')
-x = get_all_key_value_pairs_where_values_are_simple(s)
-for k, v in x:
-    print(k, "=", v)
-#print(type(k))
-
-#print(c.get_account_id_by_name('s1c0'))
-'''
+x = c.get_account_id('s1rc0r')
+y = c.get_player_personal_data("35305683,2701576")
+z = c.get_player_achievements(MY_ID)
+print(z)
+# getting account id's
+#for item in x['data']:
+#    print(item.get('account_id'))
+#for k in y['data'].values():
+#    print(k)
