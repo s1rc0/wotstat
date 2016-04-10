@@ -31,9 +31,13 @@ def filling_gamer_ids(start_id, end_id, ids_per_request):
     return print("Finished filling")
 
 # filling_gamer_ids(1, 1000, 100)
-parser = argparse.ArgumentParser(description='Process some integers.')
-parser.add_argument('integers', metavar='N', type=int, nargs='+',
-                    help='an integer for the accumulator')
+parser = argparse.ArgumentParser(description='Worker for filling users collection.')
+parser.add_argument('integers', metavar='start_id', type=int, nargs='+',
+                    help='integer, start id for parse WOT Blitz API')
+parser.add_argument('integers', metavar='end_id', type=int, nargs='+',
+                    help='integer, end id for parse WOT Blitz API')
+parser.add_argument('integers', metavar='ids_per_request', type=int, nargs='+',
+                    help='integer, number of getting IDs per request')
 parser.add_argument('--sum', dest='accumulate', action='store_const',
                     const=sum, default=max,
                     help='sum the integers (default: find the max)')
