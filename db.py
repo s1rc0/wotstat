@@ -26,12 +26,11 @@ def filling_gamer_ids(start_id, end_id, ids_per_request):
         for item in stats['data'].items():
             if item[1] is not None:
                 if db.users.find({'account_id': item[1]['account_id']}).count() > 0:
-                    print('FOUNDED, will REPLACE')
+                    pass  # need replace existing user account
                 else:
-                    print('Cant search USER in Database, will ADD')
-                    res = db.users.insert_one(item[1])
+                    res = db.users.insert_one(item[1])  # adding user account into users collection
         start_id += ids_per_request
     return print("Finished filling")
 
-filling_gamer_ids(200, 220, 10)
+filling_gamer_ids(1, 1000, 100)
 
