@@ -28,7 +28,7 @@ def filling_gamer_ids(start_id, end_id, ids_per_request):
                 if db.users.find({'account_id': item[1]['account_id']}).count() > 0:
                     pass  # need replace existing user account
                 else:
-                    res = db.users.insert_one(item[1])  # adding user account into users collection
+                    db.users.insert_one(item[1])  # adding user account into users collection
         start_id += ids_per_request
     return print("Finished filling")
 
