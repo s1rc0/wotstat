@@ -4,9 +4,12 @@ from django.db import models
 class BlitzUsers(models.Model):
     account_id = models.CharField(max_length=255)
     nickname = models.CharField(max_length=255)
+    created_at = models.IntegerField(default=0, null=True)
+    updated_at = models.IntegerField(default=0, null=True)
+    last_battle_time = models.IntegerField(default=0, null=True)
 
     def __str__(self):
-        return self.nickname
+        return self.account_id
 
 
 class StatsUserVehicle(models.Model):
@@ -39,7 +42,7 @@ class StatsUserVehicle(models.Model):
     all_dropped_capture_points = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.nickname
+        return self.account_id
 
 
 class AccountPersonalStat(models.Model):
@@ -72,4 +75,4 @@ class AccountPersonalStat(models.Model):
     all_dropped_capture_points = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.nickname
+        return self.account_id

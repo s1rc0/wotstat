@@ -79,6 +79,8 @@ class WotBlitz:
             print(e.code)
             if response is None:
                 print("url is not found")
+        except AttributeError:
+            return "URLError object has no attribute code"
 
     def get_player_achievements(self, account_id, language="en", fields=""):
         post_data = {"application_id": self.application_id, "language": language, "fields": fields,
