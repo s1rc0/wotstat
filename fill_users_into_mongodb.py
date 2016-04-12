@@ -24,23 +24,18 @@ def filling_gamer_ids(start_id, end_id, ids_per_request):
         for item in stats['data'].items():
             if item[1] is not None:
                 if db.users.find({'account_id': item[1]['account_id']}).count() > 0:
+                    print('User with account ID:', item[1]['account_id'], ' already present in database',
+                          ' will replace')
                     pass  # need replace existing user account
                 else:
                     db.users.insert_one(item[1])  # adding user account into users collection
+                    print('Adding new user account with account ID: ', item[1]['account_id'])
         start_id += ids_per_request
     return print("Finished filling")
 
-# filling_gamer_ids(1, 1000, 100)
 parser = argparse.ArgumentParser(description='Worker for filling users collection.')
-parser.add_argument('integers', metavar='start_id', type=int, nargs='+',
-                    help='integer, start id for parse WOT Blitz API')
-parser.add_argument('integers', metavar='end_id', type=int, nargs='+',
-                    help='integer, end id for parse WOT Blitz API')
-parser.add_argument('integers', metavar='ids_per_request', type=int, nargs='+',
-                    help='integer, number of getting IDs per request')
-parser.add_argument('--sum', dest='accumulate', action='store_const',
-                    const=sum, default=max,
-                    help='sum the integers (default: find the max)')
-
+parser.add_argument('-s', '--start_id', required=True, type=int)
+parser.add_argument('-e', '--end_id', required=True, type=int)
+parser.add_argument('-id', '--ids', required=True, type=int)
 args = parser.parse_args()
-print(args.accumulate(args.integers))
+filling_gamer_ids(args.start_id, args.end_id, args.ids)

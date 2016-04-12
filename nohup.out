@@ -1,0 +1,28 @@
+Traceback (most recent call last):
+  File "fill_users_into_mongodb.py", line 41, in <module>
+    filling_gamer_ids(args.start_id, args.end_id, args.ids)
+  File "fill_users_into_mongodb.py", line 23, in filling_gamer_ids
+    stats = wot.get_player_personal_data(ids_list)
+  File "/home/s1rc0/Apps/Projects/wotstat/WotBlitz.py", line 74, in get_player_personal_data
+    request = urlopen(Request(HTTP_API_HOST + GAME + ACCOUNT_INFO_METHOD), data=p)
+  File "/usr/lib64/python3.4/urllib/request.py", line 161, in urlopen
+    return opener.open(url, data, timeout)
+  File "/usr/lib64/python3.4/urllib/request.py", line 463, in open
+    response = self._open(req, data)
+  File "/usr/lib64/python3.4/urllib/request.py", line 481, in _open
+    '_open', req)
+  File "/usr/lib64/python3.4/urllib/request.py", line 441, in _call_chain
+    result = func(*args)
+  File "/usr/lib64/python3.4/urllib/request.py", line 1210, in http_open
+    return self.do_open(http.client.HTTPConnection, req)
+  File "/usr/lib64/python3.4/urllib/request.py", line 1185, in do_open
+    r = h.getresponse()
+  File "/usr/lib64/python3.4/http/client.py", line 1171, in getresponse
+    response.begin()
+  File "/usr/lib64/python3.4/http/client.py", line 351, in begin
+    version, status, reason = self._read_status()
+  File "/usr/lib64/python3.4/http/client.py", line 313, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/usr/lib64/python3.4/socket.py", line 374, in readinto
+    return self._sock.recv_into(b)
+KeyboardInterrupt
