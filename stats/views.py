@@ -1,13 +1,21 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.http import HttpResponse
-from .models import BlitzUsers
+from pymongo import MongoClient
 from WotBlitz import WotBlitz
+from pymongo.cursor import Cursor
 
 
 def index(request):
-    latest_account_list = BlitzUsers.objects.order_by('id')[:5]
-    context = {'latest_account_list': latest_account_list}
+    client = MongoClient()
+    db = client.stat
+    total = db.users.find().count()
+    latest_account_list = db.users.find().limit(1000)
+    # latest_account_list.sort('frags', 1)
+    #latest_account_list.sort({"statistics": {"max_xp": 1}})
+    context = {'latest_account_list': latest_account_list,
+               'total': total}
+    print(type(latest_account_list))
     return render(request, 'stats/index.html', context)
 
 

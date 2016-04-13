@@ -1,1 +1,9 @@
-stats: {{ stats }} <br>
+{% extends 'stats/base.html' %}
+{% block content %}
+    <hr>
+    <div class="container theme-showcase" role="main">
+    <div class="jumbotron">
+        stats: {{ stats }} <br>
+    </div>
+    </div>
+{% endblock %}
