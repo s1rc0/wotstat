@@ -3,7 +3,10 @@
     <hr>
     <div class="container theme-showcase" role="main">
     <div class="jumbotron">
-        stats: {{ stats }} <br>
+        {{ stats }} <br>
+        {% for account in stats %}
+            metar : {{ acount.1 }}
+        {% endfor %}
     </div>
     </div>
 {% endblock %}

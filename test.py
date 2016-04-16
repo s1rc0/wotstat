@@ -1,28 +1,23 @@
+from WotBlitz import WotBlitz
+from pymongo import MongoClient
+import pymongo
+import math
 import argparse
 
+wot = WotBlitz()
+wot.application_id = '6c8058cb8dadba5f30be5439d9d15490'
 
-def test(first, second , third):
-    print(first, second, third)
+client = MongoClient()
+db = client.stat
 
+# total = db.users.find().count()
+# latest_account_list = db.users.find({'losses': 100000}).limit(5)
 
-parser = argparse.ArgumentParser(description='Worker for filling users collection.')
-parser.add_argument('-s', '--start_id', required=True, type=int)
-parser.add_argument('-e', '--end_id', required=True, type=int)
-parser.add_argument('-id', '--ids', required=True, type=int)
-args = parser.parse_args()
+#for acc in db.users.find({"statistics.all.xp": 5}).sort([
+#        ('account_id', pymongo.ASCENDING)]).limit(100):
+#    print(acc['account_id'])
 
-#print(args.start_id,args.end_id,args.ids)
-test(args.start_id, args.end_id, args.ids)
-'''
-parser.add_argument('integers', metavar='start_id', type=int, nargs='+',
-                    help='integer, start id for parse WOT Blitz API')
-parser.add_argument('integers', metavar='end_id', type=int, nargs='+',
-                    help='integer, end id for parse WOT Blitz API')
-parser.add_argument('integers', metavar='ids_per_request', type=int, nargs='+',
-                    help='integer, number of getting IDs per request')
-parser.add_argument('--sum', dest='accumulate', action='store_const',
-                    const=sum, default=max,
-                    help='sum the integers (default: find the max)')
-'''
-#args = parser.parse_args()
-#print(args.accumulate(args.integers))
+for acc in db.users.find().sort().limit(100):
+    print(acc['wins'])
+
+# filling_gamer_ids(1, 1000, 100)

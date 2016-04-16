@@ -25,9 +25,9 @@
                     {% for account in latest_account_list %}
                         <tr>
                         <td><a href="{% url 'stats:detail' account.account_id %}">{{ account.nickname }}</a></td>
-                        <td>Battles: {{ account.statistics.all.battles }}</td>
-                        <td>Wins: {{ account.statistics.all.wins }}</td>
-                        <td>Losses: {{ account.statistics.all.losses }}</td>
+                        <td>{{ account.statistics.all.battles }}</td>
+                        <td>{{ account.statistics.all.wins }}</td>
+                        <td>{{ account.statistics.all.losses }}</td>
                         </tr>
                     {% endfor %}
                     {% else %}
