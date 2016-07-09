@@ -9,6 +9,12 @@ wot.application_id = '6c8058cb8dadba5f30be5439d9d15490'
 client = MongoClient()
 db = client.stat
 
+try:
+    client.server_info()
+except Exception as e:
+    print("Could not connect to server: %s" % e)
+    raise SystemExit
+
 
 def filling_gamer_ids(start_id, end_id, ids_per_request):
     if start_id > end_id:
@@ -28,6 +34,7 @@ def filling_gamer_ids(start_id, end_id, ids_per_request):
                           ' will replace')
                     pass  # need replace existing user account
                 else:
+                    pass
                     db.users.insert_one(item[1])  # adding user account into users collection
                     print('Adding new user account with account ID: ', item[1]['account_id'])
         start_id += ids_per_request
